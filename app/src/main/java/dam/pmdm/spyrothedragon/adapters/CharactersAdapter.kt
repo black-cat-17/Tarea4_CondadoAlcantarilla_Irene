@@ -5,7 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
+import dam.pmdm.spyrothedragon.CetroRiptoView
 import dam.pmdm.spyrothedragon.R
 import dam.pmdm.spyrothedragon.models.Character
 
@@ -40,4 +42,16 @@ class CharactersAdapter(
         val nameTextView: TextView = itemView.findViewById(R.id.name)
         val imageImageView: ImageView = itemView.findViewById(R.id.image)
     }
+
+    //------------------------------------------------------------------------------------------->>>
+    binding.imagenRipto.setOnLongClickListener {
+        // Creamos la vista de animación personalizada que acabas de ubicar correctamente
+        val animacionMagica = CetroRiptoView(requireContext())
+
+        // La añadimos al layout para que se vea sobre el personaje [cite: 44, 61]
+        binding.root.addView(animacionMagica)
+
+        true // Indica que el evento ha sido gestionado
+    }
+    //-------------------------------------------------------------------------------------------<<<
 }
