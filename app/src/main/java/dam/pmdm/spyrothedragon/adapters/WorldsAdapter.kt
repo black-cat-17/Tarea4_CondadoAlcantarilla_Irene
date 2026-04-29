@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dam.pmdm.spyrothedragon.R
+import dam.pmdm.spyrothedragon.VideoPlayer
 import dam.pmdm.spyrothedragon.models.World
 import kotlin.jvm.java
 
@@ -60,7 +61,7 @@ class WorldsAdapter(
                 clickCount = 0
 
                 // Lanzamos la actividad del vídeo
-                val intent = Intent(holder.itemView.context, VideoPlayerActivity::class.java)
+                val intent = Intent(holder.itemView.context, VideoPlayer::class.java)
                 holder.itemView.context.startActivity(intent)
             }
         }

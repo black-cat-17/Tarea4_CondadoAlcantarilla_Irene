@@ -68,6 +68,9 @@ class MainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("SpyroPrefs", Context.MODE_PRIVATE)
         if (prefs.getBoolean("firstRun", true)) {
             iniciarGuia()
+
+            // Guardar para que no vuelva a salir [cite: 49, 50]
+            prefs.edit().putBoolean("firstRun", false).apply()
         }
         //---------------------------------------------------------------------------------------<<<
     }
