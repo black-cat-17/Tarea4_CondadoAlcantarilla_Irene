@@ -14,6 +14,7 @@ Este proyecto consiste en la evolución multimedia de una aplicación base inspi
 
 ### Vista Previa de la Aplicación
 ![Inicio](img/inicio.png)
+
 *Interfaz representativa del inicio.*
 
 ## Tecnologías utilizadas
