@@ -41,8 +41,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="10dp"
-                    android:text="Siguiente"
                     android:backgroundTint="#2E0E66"
+                    android:text="Siguiente"
                     android:textColor="#FFFFFF" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
