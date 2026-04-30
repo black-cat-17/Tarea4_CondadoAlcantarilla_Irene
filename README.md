@@ -5,18 +5,18 @@
 ## Introducción
 Este proyecto consiste en la evolución multimedia de una aplicación base inspirada en el universo de **Spyro the Dragon**. El propósito principal es mejorar la retención del usuario y la competitividad de la app mediante el uso estratégico de elementos visuales, sonoros y sorpresas interactivas (Easter Eggs), asegurando una experiencia de usuario (UX) inmersiva y funcional.
 
-##  Características principales
+## Características principales
 *   **Guía Interactiva (Onboarding)**: Sistema de 6 pantallas con bloqueo de interacción que explica las secciones de Personajes, Mundos, Coleccionables e Información.
 *   **Bocadillos Dinámicos (Tooltips)**: Implementación de globos informativos púrpuras mediante la librería **Balloon**. Aparecen de forma animada (`ELASTIC`) al pulsar sobre la barra de navegación inferior y el icono de información.
 *   **Navegación Automatizada**: Durante la guía, la aplicación cambia automáticamente de fragmento para posicionar los bocadillos sobre los iconos correspondientes.
 *   **Easter Egg de Vídeo**: Activación de un vídeo temático mediante una interacción de triple clic en la lista de mundos.
 *   **Easter Egg Canvas**: Animación avanzada de brillo e intensidad progresiva en el cetro de Ripto mediante una pulsación prolongada.
 
-### 🖼 Vista Previa de la Aplicación
-(res/drawable/inicio.png)
+### Vista Previa de la Aplicación
+![Inicio](img/inicio.png)
 *Interfaz representativa del inicio.*
 
-## 🛠️ Tecnologías utilizadas
+## Tecnologías utilizadas
 *   **Kotlin**: Lenguaje de programación para la lógica de negocio.
 *   **Navigation Component**: Para la gestión de fragmentos y flujo entre pantallas.
 *   **Balloon Library**: Librería externa (`com.github.skydoves:balloon`) para la creación de bocadillos animados.
