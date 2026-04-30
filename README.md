@@ -28,7 +28,7 @@ Este proyecto consiste en la evolución multimedia de una aplicación base inspi
 ## Instrucciones de uso
 1.  **Clonación**:
     ```bash
-    git clone [https://github.com/black-cat-17/Tarea4_CondadoAlcantarilla_Irene.git]
+    git clone https://github.com/black-cat-17/Tarea4_CondadoAlcantarilla_Irene.git
     ```
 2.  **Sincronización**: Al abrir en Android Studio, es necesario realizar un *Sync Project with Gradle Files* para cargar la dependencia de Balloon definida en el Version Catalog (`libs.versions.toml`).
 3.  **Ejecución**: La guía interactiva se iniciará automáticamente la primera vez que se instale la aplicación.
