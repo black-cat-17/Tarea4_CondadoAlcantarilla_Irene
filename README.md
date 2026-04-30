@@ -1,37 +1,38 @@
-# Tarea 04: Multimedia y UX - Spyro The Dragon 🐉
-**BK Programación | Proyecto desarrollado por: Irene Condado Alcantarilla**
+# Tarea 04: Multimedia y UX - Spyro The Dragon
 
-## 📖 Propósito del Proyecto
-Este proyecto consiste en la evolución multimedia de una aplicación base inspirada en el universo de **Spyro the Dragon**[cite: 1]. El objetivo principal es mejorar la retención del usuario y la competitividad de la app mediante el uso estratégico de elementos visuales, sonoros y sorpresas interactivas (Easter Eggs), asegurando una experiencia de usuario (UX) inmersiva y funcional.
+**BK Programación** | Proyecto desarrollado por: **Irene Condado Alcantarilla**
 
-## 📂 Ficheros Modificados y Creados
-Para cumplir con los estándares de calidad de la empresa, se han gestionado los siguientes recursos técnicos:
+## Introducción
+Este proyecto consiste en la evolución multimedia de una aplicación base inspirada en el universo de **Spyro the Dragon**. El propósito principal es mejorar la retención del usuario y la competitividad de la app mediante el uso estratégico de elementos visuales, sonoros y sorpresas interactivas (Easter Eggs), asegurando una experiencia de usuario (UX) inmersiva y funcional.
 
-### 🎨 Interfaz y Diseño (XML)
-*   **`layout/guia.xml`**: Creado para la superposición de la guía interactiva, utilizando fondos semitransparente para mantener el contexto de la app base.
-*   **`layout/video_player.xml`**: Interfaz de pantalla completa diseñada específicamente para la reproducción del Easter Egg de vídeo.
-*   **`drawable/cristal_background.xml`**: Fondo personalizado mediante la clase Drawable con degradados inspirados en la estética de Spyro (cristales y gemas).
-*   **`anim/pop_in.xml`**: Animación de escala aplicada a los bocadillos informativos para una aparición dinámica.
+##  Características principales
+*   **Guía Interactiva (Onboarding)**: Sistema de 6 pantallas con bloqueo de interacción que explica las secciones de Personajes, Mundos, Coleccionables e Información.
+*   **Bocadillos Dinámicos (Tooltips)**: Implementación de globos informativos púrpuras mediante la librería **Balloon**. Aparecen de forma animada (`ELASTIC`) al pulsar sobre la barra de navegación inferior y el icono de información.
+*   **Navegación Automatizada**: Durante la guía, la aplicación cambia automáticamente de fragmento para posicionar los bocadillos sobre los iconos correspondientes.
+*   **Easter Egg de Vídeo**: Activación de un vídeo temático mediante una interacción de triple clic en la lista de mundos.
+*   **Easter Egg Canvas**: Animación avanzada de brillo e intensidad progresiva en el cetro de Ripto mediante una pulsación prolongada.
 
-### ⚙️ Lógica y Funcionalidad (Kotlin)
-*   **`MainActivity.kt`**: Implementación de la lógica de navegación de la guía (6 pasos), gestión de `SharedPreferences` para el mostrado único y control de audio.
-*   **`VideoPlayer.kt`**: Nueva actividad que gestiona la reproducción del video temático y el retorno automático tras finalizar.
-*   **`CetroRiptoView.kt`**: Clase de vista personalizada que utiliza la **API Canvas** para animar el brillo y la energía mágica del cetro de Ripto.
-*   **`CharactersAdapter.kt`**: Modificado para integrar el `LongClickListener` sobre el personaje Ripto y disparar la animación de Canvas.
-*   **`WorldsAdapter.kt`**: Modificado para incluir la lógica de detección de tres clics consecutivos sobre un mismo mundo.
+### 🖼 Vista Previa de la Aplicación
+(res/drawable/inicio.png)
+*Interfaz representativa del inicio.*
 
-### 📋 Configuración y Recursos Multimedia
-*   **`AndroidManifest.xml`**: Actualizado para registrar la nueva actividad `VideoPlayer` y permitir la navegación entre componentes.
-*   **`res/raw/spyro_video.mp4`**: Recurso de vídeo para el Easter Egg de la sección Mundos.
-*   **`res/raw/clic.mp3`**: Efecto de sonido temático para las interacciones y avances en la guía.
+## 🛠️ Tecnologías utilizadas
+*   **Kotlin**: Lenguaje de programación para la lógica de negocio.
+*   **Navigation Component**: Para la gestión de fragmentos y flujo entre pantallas.
+*   **Balloon Library**: Librería externa (`com.github.skydoves:balloon`) para la creación de bocadillos animados.
+*   **API Canvas**: Para el renderizado técnico de la energía mágica del cetro de Ripto.
+*   **SharedPreferences**: Gestión de la persistencia simple para el control de la guía.
+*   **Recursos Multimedia**: Gestión de vídeo (`.mp4`) y audio (`.mp3`) mediante `VideoView` y `MediaPlayer`.
 
-## ✨ Funcionalidades Destacadas
-1.  **Guía Interactiva (Onboarding)**: Sistema de 6 pantallas con bloqueo de interacción que explica Personajes, Mundos, Coleccionables e Información.
-2.  **Easter Egg de Vídeo**: Activación por interacción múltiple (triple clic) en la lista de mundos.
-3.  **Easter Egg Canvas**: Animación avanzada de brillo, cambio de color e intensidad progresiva en el cetro de Ripto mediante pulsación prolongada.
-4.  **Persistencia de Estado**: Sistema que garantiza que la guía se muestre únicamente en la primera ejecución de la app.
-
-## ⚙️ Instrucciones de Uso
+## Instrucciones de uso
 1.  **Clonación**:
     ```bash
     git clone [https://github.com/black-cat-17/Tarea4_CondadoAlcantarilla_Irene.git](https://github.com/black-cat-17/Tarea4_CondadoAlcantarilla_Irene.git)
+    ```
+2.  **Sincronización**: Al abrir en Android Studio, es necesario realizar un *Sync Project with Gradle Files* para cargar la dependencia de Balloon definida en el Version Catalog (`libs.versions.toml`).
+3.  **Ejecución**: La guía interactiva se iniciará automáticamente la primera vez que se instale la aplicación.
+
+## Conclusiones del desarrollador
+El proceso de desarrollo ha permitido integrar de manera fluida elementos multimedia y animaciones que enriquecen la experiencia del usuario.
+*   **Desafíos**: El mayor reto fue el posicionamiento dinámico de los bocadillos de la librería Balloon sobre los elementos del `BottomNavigationView`, asegurando que la flecha del globo apuntara correctamente a cada icono.
+*   **Aprendizaje**: Se ha profundizado en la creación de interfaces dinámicas y el uso de librerías de terceros para mejorar la usabilidad (UX) sin sacrificar el rendimiento de la aplicación.
