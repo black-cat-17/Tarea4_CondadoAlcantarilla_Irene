@@ -1,12 +1,10 @@
-package dam.pmdm.spyrothedragon
+package dam.pmdm.spyrothedragon.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.widget.VideoView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import dam.pmdm.spyrothedragon.R
 
 class VideoPlayer : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,15 +13,18 @@ class VideoPlayer : AppCompatActivity() {
         setContentView(R.layout.video_player)
 
         val videoView = findViewById<VideoView>(R.id.videoView)
-        // El vídeo debe estar en res/raw/spyro_video.mp4
+        // Definición de la ruta del recurso multimedia en la carpeta raw
         val path = "android.resource://" + packageName + "/" + R.raw.spyro_video
-        videoView.setVideoURI(Uri.parse(path))
+        videoView.setVideoPath(path)
 
-        videoView.setOnCompletionListener {
-            finish() // Cierra la actividad al terminar
+        // Inicio automático de la reproducción una vez que el buffer está preparado
+        videoView.setOnPreparedListener {
+            videoView.start()
         }
 
-        videoView.start()
+        // Cierre de la actividad y liberación de recursos al finalizar el vídeo
+        videoView.setOnCompletionListener {
+            finish()
+        }
     }
-
 }

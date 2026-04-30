@@ -15,7 +15,7 @@ class CetroRiptoView @JvmOverloads constructor(
     private val paintBrillo = Paint().apply {
         color = Color.YELLOW
         style = Paint.Style.FILL
-        // Efecto de desenfoque para representar energía mágica [cite: 61]
+        // Aplicación de filtro de máscara para simular el resplandor de energía mágica
         maskFilter = BlurMaskFilter(50f, BlurMaskFilter.Blur.NORMAL)
     }
 
@@ -23,13 +23,14 @@ class CetroRiptoView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        // Dibujamos el brillo en el centro de la vista [cite: 61]
+        // Renderizado del círculo de energía en el centro de la vista
         canvas.drawCircle(width / 2f, height / 2f, radioBrillo, paintBrillo)
 
-        // Animación: aumentamos la intensidad de forma progresiva [cite: 61]
+        // Lógica de animación: incremento incremental del radio hasta el límite definido
         if (radioBrillo < 200f) {
             radioBrillo += 5f
-            invalidate() // Forzamos el redibujado [cite: 61]
+            // Invalida la vista para solicitar un nuevo frame de dibujo (bucle de animación)
+            invalidate()
         }
     }
 }

@@ -13,11 +13,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import dam.pmdm.spyrothedragon.databinding.ActivityMainBinding
+import androidx.core.content.edit
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private var navController: NavController? = null
 
     //------------------------------------------------------------------------------------------->>>
-    // Variables para la  Guía de inicio interactiva
+    // Gestión del flujo de la Guía de Usuario interactiva
     private var pasoActual = 1
     //-------------------------------------------------------------------------------------------<<<
 
@@ -64,18 +66,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         //--------------------------------------------------------------------------------------->>>
-        // Lógica de la  Guía de inicio interactiva: Solo si es la primera vez
+        /**
+         * Lógica de inicialización de la Guía: Se verifica mediante SharedPreferences
+         * si es la primera ejecución para mostrar el tutorial interactivo.
+         */
         val prefs = getSharedPreferences("SpyroPrefs", Context.MODE_PRIVATE)
         if (prefs.getBoolean("firstRun", true)) {
             iniciarGuia()
 
-            // Guardar para que no vuelva a salir [cite: 49, 50]
+            // Registro de la finalización del primer inicio
             prefs.edit().putBoolean("firstRun", false).apply()
         }
         //---------------------------------------------------------------------------------------<<<
     }
 
     //------------------------------------------------------------------------------------------->>>
+    /**
+     * Infla y superpone la vista de la guía sobre el contenedor principal.
+     * Configura los listeners para la navegación entre pasos y la opción de omitir.
+     */
     private fun iniciarGuia() {
         // Inflamos el layout de la guía sobre el root de la activity
         val guiaView = layoutInflater.inflate(R.layout.guia, null)
@@ -87,12 +96,12 @@ class MainActivity : AppCompatActivity() {
         val btnSkip = guiaView.findViewById<Button>(R.id.btnOmitir)
         val card = guiaView.findViewById<CardView>(R.id.cardGuia)
 
-        // Animación (debes crear res/anim/pop_in.xml)
+        // Aplicación de animación de entrada para mejorar la UX
         val anim = AnimationUtils.loadAnimation(this, R.anim.pop_in)
         card.startAnimation(anim)
 
         btnNext.setOnClickListener {
-            // Sonido (debes poner un mp3 en res/raw/clic.mp3)
+            // Feedback auditivo al interactuar con la guía
             MediaPlayer.create(this, R.raw.clic).start()
 
             pasoActual++
@@ -106,7 +115,14 @@ class MainActivity : AppCompatActivity() {
     //-------------------------------------------------------------------------------------------<<<
 
     //------------------------------------------------------------------------------------------->>>
+    /**
+     * Actualiza el contenido visual de la guía según el paso actual del tutorial.
+     * Gestiona el texto informativo y el comportamiento de la capa de interacción.
+     */
     private fun actualizarPaso(tv: TextView, root: ViewGroup, view: View) {
+        // Cada vez que cambia el texto, lanzamos la animación de nuevo
+        val anim = AnimationUtils.loadAnimation(this, R.anim.pop_in)
+        tv.startAnimation(anim)
         when (pasoActual) {
             2 -> tv.text = "En esta pestaña conocerás a Spyro y sus amigos."
             3 -> tv.text = "Aquí podrás explorar los mundos mágicos."
@@ -114,17 +130,20 @@ class MainActivity : AppCompatActivity() {
             5 -> tv.text = "Pulsa el icono 'i' arriba para ver los créditos."
             6 -> {
                 tv.text = "¡Eso es todo! Disfruta la aventura."
-                view.findViewById<Button>(R.id.btnSiguiente).text = "Comenzar"
+                view.findViewById<Button>(R.id.btnSiguiente).text = "¡Vamos!"
             }
             else -> finalizarGuia(root, view)
         }
     }
     //-------------------------------------------------------------------------------------------<<<
     //------------------------------------------------------------------------------------------->>>
+    /**
+     * Función que finaliza la guía. Eliminando su vista y guardando el estado
+     */
     private fun finalizarGuia(root: ViewGroup, view: View) {
         root.removeView(view)
         getSharedPreferences("SpyroPrefs", Context.MODE_PRIVATE)
-            .edit().putBoolean("firstRun", false).apply()
+            .edit { putBoolean("firstRun", false) }
     }
     //-------------------------------------------------------------------------------------------<<<
 

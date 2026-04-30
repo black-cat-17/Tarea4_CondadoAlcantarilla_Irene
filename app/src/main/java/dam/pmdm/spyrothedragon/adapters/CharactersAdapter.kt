@@ -37,30 +37,32 @@ class CharactersAdapter(
         holder.imageImageView.setImageResource(drawableRes)
 
         //------------------------------------------------------------------------------------------->>>
-        // LÓGICA DEL EASTER EGG DE ANIMACIÓN
-        // Comprobamos si el personaje es Ripto (ajusta "ripto" según tu modelo)
+        /**
+         * Implementación del Easter Egg para el personaje "Ripto".
+         * Se utiliza un LongClickListener para activar una animación personalizada basada en Canvas.
+         */
         if (character.image == "ripto") {
             holder.itemView.setOnLongClickListener {
-                // 1. Creamos la vista personalizada de Canvas
+                // Instanciación de la vista personalizada que gestiona el dibujo de energía mágica
                 val animacionMagica = CetroRiptoView(holder.itemView.context)
 
-                // 2. La añadimos al contenedor raíz de la pantalla [cite: 42, 61]
-                // Buscamos el root de la Activity para que se vea por encima de todo [cite: 44]
+                // Acceso al contenedor raíz de la actividad para superponer la animación a toda la interfaz
                 val rootLayout = holder.itemView.rootView.findViewById<ViewGroup>(android.R.id.content)
 
-                // Opcional: Definir tamaño para que aparezca centrado sobre el cetro
+                // Configuración de parámetros de diseño para que la animación ocupe la pantalla completa
                 val params = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT
                 )
                 animacionMagica.layoutParams = params
 
+                // Inserción dinámica de la vista en la jerarquía visual
                 rootLayout.addView(animacionMagica)
 
-                true // Indica que el evento ha sido gestionado
+                true // Consumo del evento de pulsación prolongada
             }
         } else {
-            // Importante: Quitar el listener si no es Ripto para evitar errores al reciclar vistas
+            // Limpieza del listener en vistas recicladas para garantizar la integridad del comportamiento del RecyclerView
             holder.itemView.setOnLongClickListener(null)
         }
         //-------------------------------------------------------------------------------------------<<<

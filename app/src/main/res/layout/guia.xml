@@ -4,7 +4,7 @@
         android:id="@+id/guia"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#AA000000"
+        android:background="@drawable/cristal_background"
         android:clickable="true"
         android:focusable="true">
 
@@ -12,7 +12,7 @@
             android:id="@+id/cardGuia"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="#00BCD4"
+            app:cardBackgroundColor="#BB73C8"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,8 +42,8 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="10dp"
                     android:text="Siguiente"
-                    android:backgroundTint="#009688"
-                    android:textColor="#000000" />
+                    android:backgroundTint="#2E0E66"
+                    android:textColor="#FFFFFF" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Saltar Guía"
-            android:backgroundTint="#FF9800"
+            android:backgroundTint="#CE3B0E"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="16dp" />

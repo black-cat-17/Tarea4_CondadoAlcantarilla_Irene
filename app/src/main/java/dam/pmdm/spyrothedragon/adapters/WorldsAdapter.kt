@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dam.pmdm.spyrothedragon.R
-import dam.pmdm.spyrothedragon.VideoPlayer
+import dam.pmdm.spyrothedragon.ui.VideoPlayer
 import dam.pmdm.spyrothedragon.models.World
 import kotlin.jvm.java
 
@@ -28,10 +28,14 @@ class WorldsAdapter(
         "sunset_beach" to R.drawable.sunset_beach
     )
 
-    //--------------------------------------------------------------------------------------------->
+    //------------------------------------------------------------------------------------------->>>
+    /**
+     * Variables de estado para la gestión del Easter Egg.
+     * Permiten rastrear la interacción repetitiva sobre un mismo elemento del listado.
+     */
     private var clickCount = 0
     private var lastClickedPosition = -1
-    //---------------------------------------------------------------------------------------------<
+    //-------------------------------------------------------------------------------------------<<<
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorldsViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -39,7 +43,6 @@ class WorldsAdapter(
         return WorldsViewHolder(view)
     }
 
-    // Modificar para que cuente los clics -------------------------------------------------------->
     override fun onBindViewHolder(holder: WorldsViewHolder, position: Int) {
         val world = list[position]
         holder.nameTextView.text = world.name
@@ -47,27 +50,34 @@ class WorldsAdapter(
         val drawableRes = worldImages[world.image] ?: R.drawable.placeholder
         holder.imageImageView.setImageResource(drawableRes)
 
-        //----------------------------------------------------------------------------------------->
+        //--------------------------------------------------------------------------------------->>>
+        /**
+         * Lógica de activación del Easter Egg de vídeo.
+         * Se requiere la pulsación consecutiva (3 veces) sobre el mismo item para disparar
+         * la actividad multimedia, cumpliendo con los requisitos de interacción oculta.
+         */
         holder.itemView.setOnClickListener {
+            // Verificación de consistencia: se comprueba si el clic actual es en la misma posición que el anterior
             if (lastClickedPosition == position) {
                 clickCount++
             } else {
+                // Si el usuario cambia de elemento, se reinicia el contador de clics y se actualiza la posición de referencia
                 clickCount = 1
                 lastClickedPosition = position
             }
 
+            // Umbral de activación definido en el enunciado del proyecto
             if (clickCount == 3) {
-                // Reiniciamos contador
+                // Reseteo del contador para permitir futuras activaciones tras el cierre del vídeo
                 clickCount = 0
 
-                // Lanzamos la actividad del vídeo
+                // Inicialización y lanzamiento de la actividad de reproducción multimedia
                 val intent = Intent(holder.itemView.context, VideoPlayer::class.java)
                 holder.itemView.context.startActivity(intent)
             }
         }
-        //-----------------------------------------------------------------------------------------<
+        //---------------------------------------------------------------------------------------<<<
     }
-    //---------------------------------------------------------------------------------------------<
 
     override fun getItemCount(): Int = list.size
 
