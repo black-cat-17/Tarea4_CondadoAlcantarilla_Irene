@@ -54,4 +54,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation (libs.navigation.fragment)
     implementation (libs.navigation.ui)
+    implementation(libs.skydoves.balloon)
 }

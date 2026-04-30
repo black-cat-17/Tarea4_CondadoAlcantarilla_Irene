@@ -13,13 +13,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import dam.pmdm.spyrothedragon.databinding.ActivityMainBinding
 import androidx.core.content.edit
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     //------------------------------------------------------------------------------------------->>>
     // Gestión del flujo de la Guía de Usuario interactiva
     private var pasoActual = 1
+    // Bloqueo de interacción
+    private var guiaActiva = false
     //-------------------------------------------------------------------------------------------<<<
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,10 +91,16 @@ class MainActivity : AppCompatActivity() {
      * Configura los listeners para la navegación entre pasos y la opción de omitir.
      */
     private fun iniciarGuia() {
+        guiaActiva = true
         // Inflamos el layout de la guía sobre el root de la activity
         val guiaView = layoutInflater.inflate(R.layout.guia, null)
         val rootLayout = findViewById<ViewGroup>(android.R.id.content)
         rootLayout.addView(guiaView)
+
+        // Bloqueo de interacción
+        guiaView.isClickable = true
+        guiaView.isFocusable = true
+        guiaView.setOnTouchListener { _, _ -> true }
 
         val tvInfo = guiaView.findViewById<TextView>(R.id.tvMensaje)
         val btnNext = guiaView.findViewById<Button>(R.id.btnSiguiente)
@@ -141,23 +152,66 @@ class MainActivity : AppCompatActivity() {
      * Función que finaliza la guía. Eliminando su vista y guardando el estado
      */
     private fun finalizarGuia(root: ViewGroup, view: View) {
+        // Bloqueo de interacción
+        guiaActiva = false
+
         root.removeView(view)
         getSharedPreferences("SpyroPrefs", Context.MODE_PRIVATE)
             .edit { putBoolean("firstRun", false) }
     }
     //-------------------------------------------------------------------------------------------<<<
+    //------------------------------------------------------------------------------------------->>>
+    /**
+     * Método showSpyroBalloon
+     * para definir el estilo púrpura y la animación
+     */
+    private fun showSpyroBalloon(anchor: View, text: String) {
+        val balloon = Balloon.Builder(this)
+            .setArrowSize(15)
+            .setArrowPosition(0.5f)
+            .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            .setWidthRatio(0.85f)
+            .setHeight(BalloonSizeSpec.WRAP)
+            .setText(text)
+            .setTextColorResource(android.R.color.white)
+            .setTextSize(17f)
+            .setPadding(24)
+            .setCornerRadius(30f)
+
+            .setBackgroundColorResource(R.color.purple)
+            .setBalloonAnimation(BalloonAnimation.ELASTIC)
+            .setLifecycleOwner(this)
+            .build()
+
+        if (anchor.id == R.id.action_info) {
+            balloon.showAlignBottom(anchor, 0, 10)
+        } else {
+            balloon.showAlignTop(anchor)
+        }
+    }
+    //-------------------------------------------------------------------------------------------<<<
 
     private fun selectedBottomMenu(menuItem: MenuItem): Boolean {
+        // Obtenemos la vista del icono pulsado para anclar el bocadillo
+        val itemView = binding.navView.findViewById<View>(menuItem.itemId)
+
         when (menuItem.itemId) {
-            R.id.nav_characters ->
+            R.id.nav_characters -> {
                 navController?.navigate(R.id.navigation_characters)
-            R.id.nav_worlds ->
+                showSpyroBalloon(itemView, "Aquí podrás explorar a todos los personajes del mundo de Spyro.")
+            }
+            R.id.nav_worlds -> {
                 navController?.navigate(R.id.navigation_worlds)
-            else ->
+                showSpyroBalloon(itemView, "Aquí podrás explorar los mundos disponibles.")
+            }
+            R.id.nav_collectibles -> {
                 navController?.navigate(R.id.navigation_collectibles)
+                showSpyroBalloon(itemView, "Aquí podrás explorar los coleccionables.")
+            }
         }
         return true
     }
+    //------------------------------------------------------------------------------------------->>>
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.about_menu, menu)
@@ -165,13 +219,38 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Bloqueo de interacción
+        if (guiaActiva) return true
+
         return if (item.itemId == R.id.action_info) {
-            showInfoDialog()
+            val infoView = findViewById<View>(R.id.action_info)
+
+            val balloon = Balloon.Builder(this)
+                .setArrowSize(15)
+                .setArrowPosition(0.5f)
+                .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                .setWidthRatio(0.85f)
+                .setHeight(BalloonSizeSpec.WRAP)
+                .setText("Información detallada y créditos de la app.")
+                .setTextSize(17f)
+                .setPadding(10)
+                .setCornerRadius(30f)
+                .setBackgroundColorResource(R.color.purple)
+                .setBalloonAnimation(BalloonAnimation.ELASTIC)
+                .setLifecycleOwner(this)
+                // Cuando el bocadillo se cierre, abrimos el diálogo
+                .setOnBalloonDismissListener {
+                    showInfoDialog()
+                }
+                .build()
+
+            balloon.showAlignBottom(infoView)
             true
         } else {
             super.onOptionsItemSelected(item)
         }
     }
+    //-------------------------------------------------------------------------------------------<<<
 
     private fun showInfoDialog() {
         AlertDialog.Builder(this)
